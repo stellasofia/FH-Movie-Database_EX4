@@ -1,19 +1,36 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
 import com.j256.ormlite.dao.Dao;
+import javafx.scene.chart.PieChart;
 
 import java.util.List;
 
 public class WatchlistRepository {
 
-    Dao<WatchlistMovieEntity, Long> dao;
+    private static WatchlistRepository instance;
+    private Dao<WatchlistMovieEntity, Long> dao;
 
-    public WatchlistRepository() throws DataBaseException {
+    // The constructor of WatchlistRepository is made private to prevent direct instantiation.
+    private WatchlistRepository() throws DataBaseException {
         try {
             this.dao = DatabaseManager.getInstance().getWatchlistDao();
         } catch (Exception e) {
             throw new DataBaseException(e.getMessage());
         }
+    }
+
+    // A private static instance variable instance is declared to hold the singleton instance of WatchlistRepository.
+    // The getInstance() method is added to provide access to the singleton instance.
+    // It follows the double-checked locking pattern to ensure thread safety and lazy initialization.
+    public static WatchlistRepository getInstance() throws DataBaseException {
+        if (instance == null) {
+            synchronized (WatchlistRepository.class) {
+                if (instance == null) {
+                    instance = new WatchlistRepository();
+                }
+            }
+        }
+        return instance;
     }
 
     public List<WatchlistMovieEntity> readWatchlist() throws DataBaseException {

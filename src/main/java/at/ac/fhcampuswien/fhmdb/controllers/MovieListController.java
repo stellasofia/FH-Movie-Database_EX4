@@ -55,6 +55,8 @@ public class MovieListController implements Initializable {
 
     protected SortedState sortedState;
 
+    WatchlistRepository repository;
+
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
         if (clickedItem instanceof Movie movie) {
             WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity(
@@ -67,7 +69,8 @@ public class MovieListController implements Initializable {
                     movie.getLengthInMinutes(),
                     movie.getRating());
             try {
-                WatchlistRepository repository = new WatchlistRepository();
+                //WatchlistRepository repository = new WatchlistRepository();
+                repository = WatchlistRepository.getInstance();
                 repository.addToWatchlist(watchlistMovieEntity);
             } catch (DataBaseException e) {
                 UserDialog dialog = new UserDialog("Database Error", "Could not add movie to watchlist");
