@@ -8,20 +8,34 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.net.URL;
 
 public class MovieAPI {
     public static final String DELIMITER = "&";
-    private static final String URL = "http://prog2.fh-campuswien.ac.at/movies"; // https if certificates work
+    private static final String URL_API = "http://prog2.fh-campuswien.ac.at/movies"; // https if certificates work
     private static final OkHttpClient client = new OkHttpClient();
 
+
     private String buildUrl(UUID id) {
-        StringBuilder url = new StringBuilder(URL);
+        StringBuilder url = new StringBuilder(URL_API);
         if (id != null) {
             url.append("/").append(id);
         }
         return url.toString();
     }
 
+
+    //damit wir die dann hinschicken können hehe
+    private static String buildUrl(String query, Genre genre, String releaseYear, String ratingFrom) {
+        return new URLBuilder()
+                .withQuery(query)
+                .withGenre(genre)
+                .withReleaseYear(releaseYear)
+                .withRatingFrom(ratingFrom)
+                .build();
+    }
+
+    /*
     private static String buildUrl(String query, Genre genre, String releaseYear, String ratingFrom) {
         StringBuilder url = new StringBuilder(URL);
 
@@ -47,6 +61,7 @@ public class MovieAPI {
 
         return url.toString();
     }
+     */
 
     public static List<Movie> getAllMovies() throws MovieApiException {
         return getAllMovies(null, null, null, null);
