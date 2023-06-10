@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class MovieAPI {
     public static final String DELIMITER = "&";
-    private static final String URL_API = "http://prog2.fh-campuswien.ac.at/movies"; // https if certificates work
+    private static final String URL_API = "https://prog2.fh-campuswien.ac.at/movies"; // https if certificates work
     private static final OkHttpClient client = new OkHttpClient();
 
 
@@ -35,9 +35,9 @@ public class MovieAPI {
                 .build();
     }
 
-    /*
+/*
     private static String buildUrl(String query, Genre genre, String releaseYear, String ratingFrom) {
-        StringBuilder url = new StringBuilder(URL);
+        StringBuilder url = new StringBuilder(URL_API);
 
         if ( (query != null && !query.isEmpty()) ||
                 genre != null || releaseYear != null || ratingFrom != null) {
@@ -61,8 +61,7 @@ public class MovieAPI {
 
         return url.toString();
     }
-     */
-
+ */
     public static List<Movie> getAllMovies() throws MovieApiException {
         return getAllMovies(null, null, null, null);
     }

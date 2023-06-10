@@ -5,7 +5,7 @@ import at.ac.fhcampuswien.fhmdb.models.Genre;
 import static at.ac.fhcampuswien.fhmdb.api.MovieAPI.DELIMITER;
 
 public class URLBuilder {
-    private static final String URL_API = "https://prog2.fh-campuswien.ac.at/movies";
+    private static final String URL_API = "https://prog2.fh-campuswien.ac.at/movies?";
     private static final String URL = "http://localhost:8080/movies";
     private final StringBuilder url;
 
@@ -15,7 +15,7 @@ public class URLBuilder {
 
     public URLBuilder withQuery(String query) {
         if (query != null && !query.isEmpty()) {
-            url.append("?query=").append(query).append(DELIMITER);
+            url.append("query=").append(query).append(DELIMITER);
         }
         return this;
     }
