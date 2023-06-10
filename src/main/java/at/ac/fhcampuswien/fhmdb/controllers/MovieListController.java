@@ -6,6 +6,7 @@ import at.ac.fhcampuswien.fhmdb.api.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.database.DataBaseException;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.interfaces.ObserverWatchlist;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
@@ -31,7 +32,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class MovieListController implements Initializable {
+public class MovieListController implements Initializable,ObserverWatchlist {
     @FXML
     public JFXButton searchBtn;
 
@@ -61,9 +62,12 @@ public class MovieListController implements Initializable {
 
     private State state;
 
+
+
     public void setState(State state){
         this.state = state;
     }
+
 
     private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) -> {
         if (clickedItem instanceof Movie movie) {
@@ -88,8 +92,20 @@ public class MovieListController implements Initializable {
         }
     };
 
+
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle){
+            try {
+                repository = repository.getInstance();
+                if(repository.observers.isEmpty()) {
+                    repository.addObserver(this);
+                }
+            } catch (DataBaseException e) {
+                UserDialog dialog = new UserDialog("Database Error", "Could not read movies from DB");
+                dialog.show();
+                e.printStackTrace();
+
+        }
         initializeState();
         initializeLayout();
     }
@@ -231,5 +247,11 @@ public class MovieListController implements Initializable {
 
     public void sortBtnClicked(ActionEvent actionEvent) {
             state.sortMovies();
+    }
+
+    @Override
+    public void update(String message) {
+        // Handle update from WatchlistRepository
+        System.out.println("Received update: " + message);
     }
 }

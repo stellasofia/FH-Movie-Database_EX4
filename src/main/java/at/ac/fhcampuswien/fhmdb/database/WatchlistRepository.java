@@ -12,7 +12,7 @@ public class WatchlistRepository implements ObservableWatchlist {
 
     private static WatchlistRepository instance;
     private Dao<WatchlistMovieEntity, Long> dao;
-    private List<ObserverWatchlist> observers;
+    public List<ObserverWatchlist> observers;
 
     // The constructor of WatchlistRepository is made private to prevent direct instantiation.
     private WatchlistRepository() throws DataBaseException {

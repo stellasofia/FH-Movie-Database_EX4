@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import at.ac.fhcampuswien.fhmdb.interfaces.ObservableWatchlist;
 import at.ac.fhcampuswien.fhmdb.interfaces.ObserverWatchlist;
 
 public class WatchlistController implements Initializable, ObserverWatchlist{
@@ -52,8 +51,7 @@ public class WatchlistController implements Initializable, ObserverWatchlist{
         List<WatchlistMovieEntity> watchlist = new ArrayList<>();
         try {
             //watchlistRepository = new WatchlistRepository();
-            watchlistRepository = WatchlistRepository.getInstance();
-            watchlistRepository.addObserver(this); // Register as an observer
+            watchlistRepository = watchlistRepository.getInstance();
             watchlist = getWatchlist();
             observableWatchlist.addAll(getWatchlist());
             watchlistView.setItems(observableWatchlist);
