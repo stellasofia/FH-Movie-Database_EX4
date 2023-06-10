@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class WatchlistController implements Initializable {
+import at.ac.fhcampuswien.fhmdb.interfaces.ObservableWatchlist;
+import at.ac.fhcampuswien.fhmdb.interfaces.ObserverWatchlist;
+
+public class WatchlistController implements Initializable, ObserverWatchlist{
 
     @FXML
     public JFXListView watchlistView;
@@ -50,6 +53,7 @@ public class WatchlistController implements Initializable {
         try {
             //watchlistRepository = new WatchlistRepository();
             watchlistRepository = WatchlistRepository.getInstance();
+            watchlistRepository.addObserver(this); // Register as an observer
             watchlist = getWatchlist();
             observableWatchlist.addAll(getWatchlist());
             watchlistView.setItems(observableWatchlist);
@@ -71,5 +75,11 @@ public class WatchlistController implements Initializable {
 
     private List<WatchlistMovieEntity> getWatchlist() throws DataBaseException {
         return watchlistRepository.readWatchlist();
+    }
+
+    @Override
+    public void update(String message) {
+        // Handle update from WatchlistRepository
+        System.out.println("Received update: " + message);
     }
 }
