@@ -28,56 +28,6 @@ public class WatchlistController implements Initializable, ObserverWatchlist{
 
     protected ObservableList<WatchlistMovieEntity> observableWatchlist = FXCollections.observableArrayList();
 
-    private final ClickEventHandler onRemoveFromWatchlistClicked = (o) -> {
-        if (o instanceof WatchlistMovieEntity) {
-            WatchlistMovieEntity watchlistMovieEntity = (WatchlistMovieEntity) o;
+    //
 
-            try {
-                //WatchlistRepository watchlistRepository = new WatchlistRepository();
-                watchlistRepository = WatchlistRepository.getInstance();
-                watchlistRepository.removeFromWatchlist(watchlistMovieEntity);
-                observableWatchlist.remove(watchlistMovieEntity);
-            } catch (DataBaseException e) {
-                UserDialog dialog = new UserDialog("Database Error", "Could not remove movie from watchlist");
-                dialog.show();
-                e.printStackTrace();
-            }
-        }
-    };
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        List<WatchlistMovieEntity> watchlist = new ArrayList<>();
-        try {
-            //watchlistRepository = new WatchlistRepository();
-            watchlistRepository = watchlistRepository.getInstance();
-            watchlist = getWatchlist();
-            observableWatchlist.addAll(getWatchlist());
-            watchlistView.setItems(observableWatchlist);
-            watchlistView.setCellFactory(movieListView -> new WatchlistCell(onRemoveFromWatchlistClicked));
-
-        } catch (DataBaseException e) {
-            UserDialog dialog = new UserDialog("Database Error", "Could not read movies from DB");
-            dialog.show();
-            e.printStackTrace();
-        }
-
-        if(watchlist.size() == 0) {
-            watchlistView.setPlaceholder(new javafx.scene.control.Label("Watchlist is empty"));
-        }
-
-
-        System.out.println("WatchlistController initialized");
-    }
-
-    private List<WatchlistMovieEntity> getWatchlist() throws DataBaseException {
-        return watchlistRepository.readWatchlist();
-    }
-
-    @Override
-    public void update(String message) {
-        // Handle update from WatchlistRepository
-        System.out.println("Received update: " + message);
-    }
 }
